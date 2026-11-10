@@ -88,6 +88,8 @@ struct ContentView: View {
                 Button("Cancel Waiting", action: model.cancelRemaining)
                     .disabled(!model.hasQueuedJobs)
                 Spacer()
+                Button("Restore Original Names", action: model.restoreOriginalNames)
+                    .disabled(!model.canRestore)
                 Button("Clear Finished", action: model.clearFinished)
                     .disabled(!model.jobs.contains(where: \.isFinished))
             }
@@ -134,7 +136,7 @@ private struct ImageJobRow: View {
     }
 
     private var displayName: String {
-        job.state == .completed ? job.currentURL.lastPathComponent : job.originalName
+        job.state == .completed || job.state == .restored ? job.currentURL.lastPathComponent : job.originalName
     }
 
     private var detail: String {
@@ -147,6 +149,7 @@ private struct ImageJobRow: View {
         case .scoring: "viewfinder"
         case .renaming: "pencil.line"
         case .completed: "checkmark.circle.fill"
+        case .restored: "arrow.uturn.backward.circle"
         case .failed: "exclamationmark.triangle.fill"
         case .cancelled: "xmark.circle"
         }
@@ -154,7 +157,7 @@ private struct ImageJobRow: View {
 
     private var color: Color {
         switch job.state {
-        case .queued, .cancelled: .secondary
+        case .queued, .cancelled, .restored: .secondary
         case .scoring, .renaming: .accentColor
         case .completed: .green
         case .failed: .red

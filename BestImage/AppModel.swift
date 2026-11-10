@@ -6,15 +6,18 @@ import UniformTypeIdentifiers
 final class AppModel: ObservableObject {
     @Published private(set) var jobs: [ImageJob] = []
     @Published private(set) var errorMessage: String?
+    @Published private(set) var isProcessing = false
+    @Published private(set) var isRestoring = false
 
     private var batchTask: Task<Void, Never>?
 
     deinit { batchTask?.cancel() }
 
-    var isProcessing: Bool { batchTask != nil }
     var hasQueuedJobs: Bool { jobs.contains { $0.state == .queued } }
     var completedCount: Int { jobs.count { $0.state == .completed } }
+    var restoredCount: Int { jobs.count { $0.state == .restored } }
     var failedCount: Int { jobs.count { $0.state == .failed } }
+    var canRestore: Bool { !isProcessing && !isRestoring && completedCount > 0 }
 
     var progress: Double {
         guard !jobs.isEmpty else { return 0 }
@@ -24,6 +27,7 @@ final class AppModel: ObservableObject {
     var summary: String {
         if jobs.isEmpty { return "No images yet" }
         if isProcessing { return "\(completedCount) of \(jobs.count) renamed" }
+        if completedCount == 0, restoredCount > 0, failedCount == 0 { return "\(restoredCount) restored" }
         if failedCount > 0 { return "\(completedCount) renamed • \(failedCount) failed" }
         return "\(completedCount) image\(completedCount == 1 ? "" : "s") renamed"
     }
@@ -73,8 +77,40 @@ final class AppModel: ObservableObject {
         NSWorkspace.shared.activateFileViewerSelecting([job.currentURL])
     }
 
+    /// Puts every renamed file back to its original name.
+    func restoreOriginalNames() {
+        guard canRestore else { return }
+        let requests = jobs.filter { $0.state == .completed }.map {
+            ImageRestoreRequest(id: $0.id, currentURL: $0.currentURL, originalName: $0.originalName)
+        }
+        isRestoring = true
+        errorMessage = nil
+
+        Task { [weak self] in
+            let results = await Task.detached(priority: .userInitiated) {
+                ImageRenamer.restore(requests)
+            }.value
+            guard let self else { return }
+            for result in results {
+                guard let index = jobs.firstIndex(where: { $0.id == result.id }) else { continue }
+                if let destination = result.destinationURL {
+                    jobs[index].currentURL = destination
+                    jobs[index].state = .restored
+                    jobs[index].statusMessage = "Original name restored"
+                    jobs[index].errorMessage = nil
+                } else {
+                    jobs[index].errorMessage = result.errorDescription
+                    jobs[index].statusMessage = "Restore failed"
+                }
+            }
+            isRestoring = false
+            startProcessingIfNeeded()
+        }
+    }
+
     private func startProcessingIfNeeded() {
-        guard batchTask == nil, hasQueuedJobs else { return }
+        guard batchTask == nil, !isRestoring, hasQueuedJobs else { return }
+        isProcessing = true
         batchTask = Task { [weak self] in await self?.processBatch() }
     }
 
@@ -101,6 +137,7 @@ final class AppModel: ObservableObject {
         }
 
         batchTask = nil
+        isProcessing = false
         if hasQueuedJobs { startProcessingIfNeeded() }
     }
 
@@ -109,9 +146,6 @@ final class AppModel: ObservableObject {
         let url = jobs[index].sourceURL
         jobs[index].state = .scoring
         jobs[index].statusMessage = "Calculating Vision score"
-
-        let didAccess = url.startAccessingSecurityScopedResource()
-        defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
 
         do {
             let result = try await ImageScorer.score(url)

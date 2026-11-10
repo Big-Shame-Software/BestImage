@@ -8,6 +8,7 @@ BestImage is a native macOS drag-and-drop utility for sorting image files by App
 2. BestImage scores each image on your Mac with Apple Vision.
 3. The original files are renamed in place.
 4. In Finder, sort by **Name** descending to put the highest scores first.
+5. To undo, click **Restore Original Names** while the files are still listed in the window.
 
 ## Filename format
 
@@ -35,6 +36,10 @@ xcodebuild -project BestImage.xcodeproj -scheme BestImage -configuration Release
 ```
 
 The project uses ad-hoc signing, so no Apple developer account is needed. No prebuilt binaries are published.
+
+## How it was made
+
+This app was written mostly with Claude, with some consulting from ChatGPT and occasional help from Gemini or an on-device Qwen model. No Grok was used.
 
 ## Licence
 

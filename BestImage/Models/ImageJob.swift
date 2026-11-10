@@ -6,6 +6,7 @@ struct ImageJob: Identifiable, Sendable {
         case scoring
         case renaming
         case completed
+        case restored
         case failed
         case cancelled
     }
@@ -28,6 +29,6 @@ struct ImageJob: Identifiable, Sendable {
     }
 
     var isFinished: Bool {
-        state == .completed || state == .failed || state == .cancelled
+        state == .completed || state == .restored || state == .failed || state == .cancelled
     }
 }
