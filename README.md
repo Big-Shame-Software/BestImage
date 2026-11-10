@@ -1,3 +1,5 @@
+<p align="center"><img src=".github/big-shame-logo.png" alt="Big Shame Software" width="360"></p>
+
 # BestImage
 
 BestImage is a native macOS drag-and-drop utility for sorting image files by Apple Vision's image-aesthetics score.
