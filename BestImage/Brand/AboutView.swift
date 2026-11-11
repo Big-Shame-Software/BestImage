@@ -50,9 +50,12 @@ struct AboutView: View {
                     .accessibilityLabel("Big Shame Software")
                     .padding(.top, 4)
 
-                Text("A Big Shame Software app. Public domain.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                VStack(spacing: 2) {
+                    Text("N©! Big Shame Software 2026")
+                    Text("a Big Shame Software app · public domain")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 24)
