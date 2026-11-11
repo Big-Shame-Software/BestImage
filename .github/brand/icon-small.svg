@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" shape-rendering="crispEdges">
+<defs><clipPath id="sq"><rect x="100" y="100" width="824" height="824" rx="185"/></clipPath></defs>
+<g clip-path="url(#sq)"><g transform="translate(100 100) scale(0.8046875)">
+<rect width="1024" height="1024" fill="#FF2D6F"/>
+<path d="M160 160H768L864 256V864H160Z" fill="#2A0B1E"/>
+<path d="M192 192H752.0L832 272.0V832H192Z" fill="#EAD2A8"/>
+<rect x="320" y="192" width="384" height="224" fill="#2A0B1E"/>
+<rect x="352" y="192" width="320" height="192" fill="#FFF4DE"/>
+<rect x="256" y="480" width="512" height="352" fill="#2A0B1E"/>
+<rect x="288" y="512" width="448" height="320" fill="#FFF4DE"/>
+<rect x="288" y="704" width="448" height="32" fill="#FF2D6F"/>
+<rect x="288" y="736" width="448" height="32" fill="#FF7A1F"/>
+<rect x="288" y="768" width="448" height="32" fill="#FFD43B"/>
+<rect x="288" y="800" width="448" height="32" fill="#22C7D9"/>
+<rect x="224" y="224" width="64" height="32" fill="#FFF4DE"/>
+<rect x="224" y="256" width="32" height="64" fill="#FFF4DE"/>
+</g></g>
+</svg>

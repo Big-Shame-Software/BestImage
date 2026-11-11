@@ -11,5 +11,23 @@ struct BestImageApp: App {
                 .frame(minWidth: 720, minHeight: 520)
         }
         .windowResizability(.contentSize)
+        .commands { AboutCommand() }
+
+        Window("About BestImage", id: "about") {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
+        .restorationBehavior(.disabled)
+    }
+}
+
+private struct AboutCommand: Commands {
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some Commands {
+        CommandGroup(replacing: .appInfo) {
+            Button("About BestImage") { openWindow(id: "about") }
+        }
     }
 }

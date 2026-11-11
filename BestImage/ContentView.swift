@@ -25,10 +25,15 @@ struct ContentView: View {
 
     private var dropZone: some View {
         VStack(spacing: 11) {
-            Image(systemName: isDropTargeted ? "arrow.down.circle.fill" : "photo.stack")
-                .font(.system(size: 42, weight: .medium))
-                .foregroundStyle(isDropTargeted ? Color.accentColor : Color.primary)
-                .symbolRenderingMode(.hierarchical)
+            if model.jobs.isEmpty && !isDropTargeted {
+                // Empty state: brand pixel art is allowed here (styleguide §9).
+                PixelDisk(size: 56)
+            } else {
+                Image(systemName: isDropTargeted ? "arrow.down.circle.fill" : "photo.stack")
+                    .font(.system(size: 42, weight: .medium))
+                    .foregroundStyle(isDropTargeted ? Color.accentColor : Color.primary)
+                    .symbolRenderingMode(.hierarchical)
+            }
             Text(isDropTargeted ? "Release to score and rename" : "Drop images here")
                 .font(.title2.weight(.semibold))
             Text("Files are renamed in place. Sort by Name descending to see the best scores first.")

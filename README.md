@@ -1,6 +1,10 @@
 <p align="center"><img src=".github/big-shame-logo.png" alt="Big Shame Software" width="360"></p>
 
-# BestImage
+# BestImage: Score and Sort Images by Aesthetics
+
+<p><img src=".github/brand/icon-512.png" alt="" width="96" align="right"></p>
+
+*Filed under: Photography*
 
 BestImage is a native macOS drag-and-drop utility for sorting image files by Apple Vision's image-aesthetics score.
 
@@ -39,10 +43,18 @@ xcodebuild -project BestImage.xcodeproj -scheme BestImage -configuration Release
 
 The project uses ad-hoc signing, so no Apple developer account is needed. No prebuilt binaries are published.
 
+## Versioning
+
+BestImage uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+
 ## How it was made
 
 This app was written mostly with Claude, with some consulting from ChatGPT and occasional help from Gemini or an on-device Qwen model. No Grok was used.
 
 ## Licence
 
-Public domain, via [the Unlicense](LICENSE). A Big Shame Software release.
+Public domain, via [the Unlicense](LICENSE).
+
+---
+
+BestImage is a Big Shame Software app. The icon's SVG masters are in `.github/brand/`.
