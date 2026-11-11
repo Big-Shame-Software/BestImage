@@ -29,6 +29,26 @@ enum BSSBrand {
     /// Fixed order: magenta, orange, yellow, cyan. Never reorder.
     static let rainbow: [Color] = [hotMagenta, sunsetOrange, sunshineYellow, aquaCyan]
 
+    /// Every named color above with its hex value. The crop color meter uses this to name
+    /// a sampled color. Keep it in sync when a color changes.
+    static let namedHex: [(name: String, hex: UInt32)] = [
+        ("plumInk", 0x2A0B1E),
+        ("computerBeige", 0xEAD2A8),
+        ("cream", 0xFFF4DE),
+        ("phosphorGreen", 0x7DFF3A),
+        ("crtGreen", 0x0E2E1C),
+        ("hotMagenta", 0xFF2D6F),
+        ("sunsetOrange", 0xFF7A1F),
+        ("sunshineYellow", 0xFFD43B),
+        ("aquaCyan", 0x22C7D9),
+        ("dust", 0x8A7560),
+        ("prairieGold", 0xE8B04A),
+        ("skyBlue", 0x6EC6E8),
+        ("wagonBrown", 0x7A4A2A),
+        ("plmCobalt", 0x0057C8),
+        ("plmCream", 0xF4EAD6),
+    ]
+
     enum Category: String, CaseIterable {
         case libraryUtilities = "Library and Utilities"
         case media = "Media"

@@ -8,6 +8,16 @@ final class AppModel: ObservableObject {
     @Published private(set) var errorMessage: String?
     @Published private(set) var isProcessing = false
     @Published private(set) var isRestoring = false
+    /// Files for the Crop section. Kept separate from `jobs` so cropping never scores them.
+    @Published private(set) var cropFiles: [URL] = []
+
+    func addCropFiles(_ urls: [URL]) {
+        for url in urls where !cropFiles.contains(url) { cropFiles.append(url) }
+    }
+
+    func removeCropFile(_ url: URL) {
+        cropFiles.removeAll { $0 == url }
+    }
 
     private var batchTask: Task<Void, Never>?
 

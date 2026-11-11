@@ -13,6 +13,14 @@ struct BestImageApp: App {
         .windowResizability(.contentSize)
         .commands { AboutCommand() }
 
+        WindowGroup("Crop", id: "crop", for: URL.self) { urlBinding in
+            if let url = urlBinding.wrappedValue {
+                CropWindowView(url: url)
+                    .environmentObject(model)
+            }
+        }
+        .defaultSize(width: 1100, height: 820)
+
         Window("About BestImage", id: "about") {
             AboutView()
         }

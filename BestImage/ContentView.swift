@@ -3,12 +3,30 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @State private var isDropTargeted = false
+    @State private var section: Section = .score
+
+    private enum Section: String, CaseIterable, Identifiable {
+        case score = "Score"
+        case crop = "Crop"
+        var id: String { rawValue }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             header
-            dropZone
-            if !model.jobs.isEmpty || model.errorMessage != nil { resultsPanel }
+            Picker("Section", selection: $section) {
+                ForEach(Section.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .frame(width: 220)
+
+            if section == .score {
+                dropZone
+                if !model.jobs.isEmpty || model.errorMessage != nil { resultsPanel }
+            } else {
+                CropLibraryView()
+            }
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
