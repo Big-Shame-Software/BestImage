@@ -6,17 +6,32 @@
 
 *Filed under: Photography*
 
-BestImage is a native macOS drag-and-drop utility for sorting image files by Apple Vision's image-aesthetics score.
+BestImage is a native macOS drag-and-drop utility that sorts image files by Apple Vision's image-aesthetics score.
+
+Apple put a model in Vision that will tell you, on a scale from -1 to 1, how good it thinks a picture looks. BestImage asks it about every image you drop in and writes the answer into the filename, so Finder can do the sorting. I should mention two things up front: it renames your original files, and it's source only, so you'll need macOS 15 and Xcode 16 to build it. The scores are Apple's opinion. We wouldn't dare have one.
+
+## What it does
+
+- Scores each image on your Mac with Apple Vision. Nothing is uploaded.
+- Renames the original file so that sorting by name puts the highest scores first.
+- Re-scoring an image it already renamed replaces the old prefix instead of adding another.
+- Puts the original names back with one click.
+
+## What it doesn't do yet
+
+- It renames files in place. It doesn't copy them first.
+- **Restore Original Names** only works while the files are still listed in the window. After that, each original name is still in its filename, after the `__`.
+- It doesn't move, delete or edit the pictures themselves.
+- The score is Vision's single number. It knows nothing about who's in the photo or why you kept it.
 
 ## Use
 
 1. Drop image files into the window, or click **Choose Images**.
-2. BestImage scores each image on your Mac with Apple Vision.
-3. The original files are renamed in place.
-4. In Finder, sort by **Name** descending to put the highest scores first.
-5. To undo, click **Restore Original Names** while the files are still listed in the window.
+2. BestImage scores each image and renames it in place.
+3. In Finder, sort by **Name** descending. The highest scores come first.
+4. To undo, click **Restore Original Names** while the files are still listed in the window.
 
-## Filename format
+### Filename format
 
 `1.742_score+0.742__IMG_0042.jpg`
 
@@ -24,9 +39,8 @@ BestImage is a native macOS drag-and-drop utility for sorting image files by App
 - `+0.742` is the actual Apple Vision score.
 - `IMG_0042.jpg` is the original filename.
 - A collision adds `__2`, `__3`, and so on immediately before the extension.
-- Dropping an already scored image replaces the managed prefix instead of adding another prefix.
 
-The sort value is required because macOS filename sorting does not order negative decimal text numerically. Scores are clamped to Vision's `-1...1` range for naming.
+The sort value is needed because macOS filename sorting does not order negative decimal text numerically. Scores are clamped to Vision's `-1...1` range for naming.
 
 ## Requirements
 
@@ -41,20 +55,24 @@ Open `BestImage.xcodeproj` in Xcode and run, or from Terminal:
 xcodebuild -project BestImage.xcodeproj -scheme BestImage -configuration Release build
 ```
 
-The project uses ad-hoc signing, so no Apple developer account is needed. No prebuilt binaries are published.
+The project uses ad hoc signing, so no Apple developer account is needed. No prebuilt binaries are published.
 
 ## Versioning
 
 BestImage uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
-## How it was made
+## How to help
 
-This app was written mostly with Claude, with some consulting from ChatGPT and occasional help from Gemini or an on-device Qwen model. No Grok was used.
+If a score, a rename or a restore does something you didn't expect, please open an issue on this repository and say what you dropped in and what you saw. We don't take pull requests, so an issue is the way in. We'd rather know.
+
+## Credits and thanks
+
+- The scoring is Apple's: the image-aesthetics request in the [Vision](https://developer.apple.com/documentation/vision) framework.
+- This app was written mostly with Claude, with some consulting from ChatGPT and occasional help from Gemini or an on-device Qwen model. No Grok was used.
+- The icon's SVG masters are in `.github/brand/`.
 
 ## Licence
 
-Public domain, via [the Unlicense](LICENSE).
+N©! Big Shame Software 2026. Public domain, via [the Unlicense](LICENSE).
 
----
-
-BestImage is a Big Shame Software app. The icon's SVG masters are in `.github/brand/`.
+a Big Shame Software app
